@@ -1,0 +1,20 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# SQLite
+*.db
+
+# Environment
+.env
+
+# Node
+frontend/node_modules/
+
+# Editors
+.vscode/
+.cursor/
+
+# Logs
+*.log

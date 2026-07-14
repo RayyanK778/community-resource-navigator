@@ -1,8 +1,9 @@
 """
 FastAPI app entrypoint.
 
-Day 1 scope: boot the app, create tables, expose a health check.
-Day 2 adds the actual /resources CRUD endpoints (see PRD milestones).
+Milestone 2: /resources read endpoints (list/search/filter, get by id) wired
+in via the resources router. Create/update/admin endpoints come in a later
+milestone (see docs/PRD.md Section 4a).
 """
 
 from fastapi import FastAPI
@@ -10,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .database import engine
 from .models import Base
+from .routers import resources
 
 Base.metadata.create_all(bind=engine)
 
@@ -22,6 +24,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(resources.router)
 
 
 @app.get("/health")

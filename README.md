@@ -27,30 +27,75 @@ community-resource-navigator/
 
 ## Status
 
-**Day 1 of 10 — scaffolding complete.**
+**Milestone 2 of 10-day plan — resource directory complete.**
 - [x] Backend boots, connects to SQLite, `/health` returns 200
 - [x] `resources` table schema created (matches PRD Section 8)
 - [x] Frontend boots (Vite dev server)
-- [ ] `/resources` CRUD endpoints (Day 2)
-- [ ] Seed dataset (Day 2)
-- [ ] Manual search/filter UI (Day 3)
-- [ ] AI triage (Day 4–6)
-- [ ] Human review UI + export (Day 6–7)
-- [ ] Admin UI / reliability testing / docs (Day 8–10)
+- [x] Seed script with 24 fictional King County resources (7 categories, idempotent)
+- [x] `GET /resources` — list, keyword search (`q`), category filter, `include_inactive` flag
+- [x] `GET /resources/{id}` — detail, 404 on missing id
+- [x] `GET /resources/categories` — category list with display labels
+- [ ] Manual search/filter UI (next)
+- [ ] AI triage
+- [ ] Human review UI + export
+- [ ] Admin UI / reliability testing / docs
 
 See `docs/PRD.md` Section 12 for the full day-by-day plan.
+
+## API reference (current)
+
+| Method | Path | Notes |
+|---|---|---|
+| GET | `/health` | Health check |
+| GET | `/resources` | Query params: `category`, `q`, `include_inactive` |
+| GET | `/resources/{id}` | 404 if not found |
+| GET | `/resources/categories` | `[{value, label}, ...]` for UI dropdowns |
+
+Interactive docs available at `http://localhost:8000/docs` when the server is running.
+
+## Seeding the database
+
+**macOS / Linux:**
+```bash
+cd backend
+python3 -m app.seed
+```
+
+**Windows (PowerShell):**
+```powershell
+cd backend
+python -m app.seed
+```
+
+Safe to re-run — matches existing rows by name and updates them rather than duplicating.
 
 ## Running locally
 
 ### Backend
+
+**macOS / Linux:**
 ```bash
 cd backend
 pip install -r requirements.txt --break-system-packages   # or use a venv
 python3 -m uvicorn app.main:app --reload --port 8000
 ```
+
+**Windows (PowerShell):**
+```powershell
+cd backend
+python -m venv venv
+venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+python -m uvicorn app.main:app --reload --port 8000
+```
+> If `Activate.ps1` is blocked by execution policy, run PowerShell as Administrator once and use:
+> `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`
+
 Visit `http://localhost:8000/health` — should return `{"status": "ok"}`.
 
 ### Frontend
+
+**macOS / Linux / Windows (PowerShell) — identical:**
 ```bash
 cd frontend
 npm install
